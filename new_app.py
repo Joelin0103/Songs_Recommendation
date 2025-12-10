@@ -11,6 +11,7 @@ from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
 import os
+import streamlit.components.v1 as components
 
 # ================================
 # 頁面設置
@@ -391,10 +392,11 @@ def main():
         st.markdown("## 🎯 智能音樂推薦")
 
         query = st.text_area(
-            "請描述你的心情、情境或想說的話：",
-            placeholder="例如：上班好累, 想聽療癒一點的歌...",
-            height=100
-        )
+                "請描述你的心情、情境或想說的話：",
+                value=st.session_state.get("query", ""),
+                placeholder="例如：上班好累, 想聽療癒一點的歌...",
+                height=100
+            )
 
         example_queries = [
             "快樂的愛情故事",
@@ -412,9 +414,6 @@ def main():
             if col.button(example, key=f"example_{i}"):
                 st.session_state.query = example
                 st.rerun()
-
-        # if "query" in st.session_state and not query.strip():
-        #     query = st.session_state.query
 
         if st.button("🎧 開始推薦", type="primary", use_container_width=True):
             if query.strip():
